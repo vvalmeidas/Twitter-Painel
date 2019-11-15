@@ -1,10 +1,11 @@
 require('dotenv').config();
 var Twitter = require('twitter');
-var AWS = require('aws-sdk');
-AWS.config.loadFromPath('./config.json');
+//var AWS = require('aws-sdk');
+//AWS.config.loadFromPath('./config.json');
 
 
-var dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+//var dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
+
 //user settings
 var querySearch = 'twitter';
 var cityName = 'Salvador';
@@ -13,7 +14,7 @@ var long = '';
 var radius = '5km';
 
 //reading geolocation data
-var citiesData = require('./municipios.json');
+var citiesData = require('../files/municipios.json');
 citiesData.forEach(city => {
     if (city.nome == cityName) {
         lat = city.latitude;
@@ -53,14 +54,19 @@ var client = new Twitter({
 });
 
 
+var registeredSearchs = [];
 
+var searchParams = {};
 
-client.get('search/tweets', {
-    q: querySearch,
-    tweet_mode: 'extended',
-    count: 100,
-    geocode: lat + ',' + long + ',' + radius
-}, function(error, tweets, response) {
+searchParams.q = querySearch;
+searchParams.tweet_mode = 'extended';
+searchParams.count = 100;
+searchParams.geocode = lat + ',' + long + ',' + radius;
+
+console.log(JSON.stringify(searchParams));
+
+client.get('search/tweets', JSON.stringify(searchParams), function(error, tweets, response) {
+    console.log(tweets);
     tweets.statuses.forEach(function(tweet) {
         id = tweet.id_str;
         createdAt = tweet.created_at.split(' ');
@@ -75,34 +81,35 @@ client.get('search/tweets', {
 
         text = tweet.full_text;
 
-        /*
+
         console.log("DADOS DO TWEET");
         console.log(id);
         console.log(text);
         console.log(date);
         console.log(isRT);
         console.log("\n\n");
-*/
-        var params = {
-            Item: {
-                "id": {
-                    S: id
-                },
-                "text": {
-                    S: text
-                },
-                "date": {
-                    S: date
-                }
-            },
-            ReturnConsumedCapacity: "TOTAL",
-            TableName: "tweet"
-        };
-        dynamodb.putItem(params, function(err, data) {
-            if (err) console.log(err, err.stack); // an error occurred
-            else console.log(data); // successful response
-        });
 
+        /*
+                var params = {
+                    Item: {
+                        "id": {
+                            S: id
+                        },
+                        "text": {
+                            S: text
+                        },
+                        "date": {
+                            S: date
+                        }
+                    },
+                    ReturnConsumedCapacity: "TOTAL",
+                    TableName: "tweet"
+                };
+                dynamodb.putItem(params, function(err, data) {
+                    if (err) console.log(err, err.stack); // an error occurred
+                    else console.log(data); // successful response
+                });
+        */
         i++;
     });
 
