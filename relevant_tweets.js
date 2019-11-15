@@ -1,13 +1,7 @@
 require('dotenv').config();
 var Twitter = require('twitter');
 var AWS = require('aws-sdk');
-AWS.config.update({ region: 'sa-east-1' });
-
-AWS.config.update({
-    accessKeyId: "AKIAJ3PJ5N7YUZWPE66Q",
-    secretAccessKey: "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",
-    "region": "sa-east-1"
-});
+AWS.config.loadFromPath('./config.json');
 
 
 var dynamodb = new AWS.DynamoDB();
