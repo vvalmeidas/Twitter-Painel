@@ -4,7 +4,7 @@ var AWS = require('aws-sdk');
 AWS.config.loadFromPath('./config.json');
 
 
-var dynamodb = new AWS.DynamoDB();
+var dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
 //user settings
 var querySearch = 'twitter';
 var cityName = 'Salvador';
