@@ -1,6 +1,7 @@
 require('dotenv').config();
 var Twitter = require('twitter');
 
+var dynamodb = new AWS.DynamoDB();
 //user settings
 var querySearch = 'twitter';
 var cityName = 'Salvador';
@@ -50,6 +51,8 @@ var client = new Twitter({
 });
 
 
+
+
 client.get('search/tweets', {
     q: querySearch,
     tweet_mode: 'extended',
@@ -77,6 +80,27 @@ client.get('search/tweets', {
         console.log(date);
         console.log(isRT);
         console.log("\n\n");
+
+        var params = {
+            Item: {
+                "id": {
+                    S: id
+                },
+                "text": {
+                    S: text
+                },
+                "date": {
+                    S: date
+                }
+            },
+            ReturnConsumedCapacity: "TOTAL",
+            TableName: "tweet"
+        };
+        dynamodb.putItem(params, function(err, data) {
+            if (err) console.log(err, err.stack); // an error occurred
+            else console.log(data); // successful response
+        });
+
         i++;
     });
 
