@@ -27,6 +27,17 @@ var months = {
 
 var params;
 
+var AWS = require("aws-sdk");
+
+var dynamodb = new AWS.DynamoDB({ region: 'sa-east-1' });
+dynamodb.batchGetItem(params, function(err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else console.log(data); // successful response
+});
+
+
+
+
 
 module.exports.start = function() {
     console.log("aaaa");
