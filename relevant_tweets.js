@@ -56,6 +56,7 @@ client.get('search/tweets', {
     count: 100,
     geocode: lat + ',' + long + ',' + radius
 }, function(error, tweets, response) {
+    console.log(tweets);
     tweets.statuses.forEach(function(tweet) {
         id = tweet.id_str;
         createdAt = tweet.created_at.split(' ');
