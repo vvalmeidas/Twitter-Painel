@@ -1,26 +1,5 @@
-require('dotenv').config();
-var Twitter = require('twitter');
-//var AWS = require('aws-sdk');
-//AWS.config.loadFromPath('./config.json');
-
-
-//var dynamodb = new AWS.DynamoDB({ apiVersion: '2012-08-10' });
-
-//user settings
-var querySearch = 'twitter';
-var cityName = 'Salvador';
-var lat = '';
-var long = '';
-var radius = '5km';
-
-//reading geolocation data
-var citiesData = require('../files/municipios.json');
-citiesData.forEach(city => {
-    if (city.nome == cityName) {
-        lat = city.latitude;
-        long = city.longitude;
-    }
-});
+var client = require('./twitter_client');
+var settingsSearch = require('./settings_search');
 
 //twitter search results
 var text = '';
@@ -46,72 +25,42 @@ var months = {
     'Dec': '12'
 }
 
-var client = new Twitter({
-    consumer_key: process.env.TWITTER_CONSUMER_KEY,
-    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
-    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
-    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
-});
+var params;
 
 
-var registeredSearchs = [];
+module.exports.start = function() {
+    console.log("aaaa");
+    params = settingsSearch.getUpdateParams();
 
-var searchParams = {};
+    params.forEach(param => {
+        client.get('search/tweets', param, function(error, tweets, response) {
+            tweets.statuses.forEach(function(tweet) {
+                id = tweet.id_str;
+                createdAt = tweet.created_at.split(' ');
+                date = createdAt[2] + '/' + months[createdAt[1]] + '/' + createdAt[5];
 
-searchParams.q = querySearch;
-searchParams.tweet_mode = 'extended';
-searchParams.count = 100;
-searchParams.geocode = lat + ',' + long + ',' + radius;
+                if (tweet.retweeted_status) {
+                    tweet = tweet.retweeted_status;
+                    isRT = true;
+                } else {
+                    isRT = false;
+                }
 
-console.log(JSON.stringify(searchParams));
-
-client.get('search/tweets', JSON.stringify(searchParams), function(error, tweets, response) {
-    console.log(tweets);
-    tweets.statuses.forEach(function(tweet) {
-        id = tweet.id_str;
-        createdAt = tweet.created_at.split(' ');
-        date = createdAt[2] + '/' + months[createdAt[1]] + '/' + createdAt[5];
-
-        if (tweet.retweeted_status) {
-            tweet = tweet.retweeted_status;
-            isRT = true;
-        } else {
-            isRT = false;
-        }
-
-        text = tweet.full_text;
+                text = tweet.full_text;
 
 
-        console.log("DADOS DO TWEET");
-        console.log(id);
-        console.log(text);
-        console.log(date);
-        console.log(isRT);
-        console.log("\n\n");
+                console.log("DADOS DO TWEET");
+                console.log(id);
+                console.log(text);
+                console.log(date);
+                console.log(isRT);
+                console.log("\n\n");
+                i++;
 
-        /*
-                var params = {
-                    Item: {
-                        "id": {
-                            S: id
-                        },
-                        "text": {
-                            S: text
-                        },
-                        "date": {
-                            S: date
-                        }
-                    },
-                    ReturnConsumedCapacity: "TOTAL",
-                    TableName: "tweet"
-                };
-                dynamodb.putItem(params, function(err, data) {
-                    if (err) console.log(err, err.stack); // an error occurred
-                    else console.log(data); // successful response
-                });
-        */
-        i++;
+            });
+
+            console.log(i);
+            i = 0;
+        });
     });
-
-    console.log(i);
-});
+};
