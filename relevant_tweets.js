@@ -1,6 +1,7 @@
 require('dotenv').config();
 var Twitter = require('twitter');
 var AWS = require('aws-sdk');
+AWS.config.update({ region: 'sa-east-1' });
 
 var dynamodb = new AWS.DynamoDB();
 //user settings
