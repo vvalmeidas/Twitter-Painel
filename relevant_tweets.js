@@ -1,5 +1,6 @@
 require('dotenv').config();
 var Twitter = require('twitter');
+var AWS = require('aws-sdk');
 
 var dynamodb = new AWS.DynamoDB();
 //user settings
