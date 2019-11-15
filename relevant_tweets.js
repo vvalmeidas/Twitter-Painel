@@ -3,6 +3,13 @@ var Twitter = require('twitter');
 var AWS = require('aws-sdk');
 AWS.config.update({ region: 'sa-east-1' });
 
+AWS.config.update({
+    accessKeyId: "AKIAJ3PJ5N7YUZWPE66Q",
+    secretAccessKey: "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",
+    "region": "sa-east-1"
+});
+
+
 var dynamodb = new AWS.DynamoDB();
 //user settings
 var querySearch = 'twitter';
@@ -17,7 +24,6 @@ citiesData.forEach(city => {
     if (city.nome == cityName) {
         lat = city.latitude;
         long = city.longitude;
-        console.log("Achou municipio");
     }
 });
 
@@ -61,7 +67,6 @@ client.get('search/tweets', {
     count: 100,
     geocode: lat + ',' + long + ',' + radius
 }, function(error, tweets, response) {
-    console.log(tweets);
     tweets.statuses.forEach(function(tweet) {
         id = tweet.id_str;
         createdAt = tweet.created_at.split(' ');
@@ -76,13 +81,14 @@ client.get('search/tweets', {
 
         text = tweet.full_text;
 
+        /*
         console.log("DADOS DO TWEET");
         console.log(id);
         console.log(text);
         console.log(date);
         console.log(isRT);
         console.log("\n\n");
-
+*/
         var params = {
             Item: {
                 "id": {
