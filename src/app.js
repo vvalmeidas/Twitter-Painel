@@ -1,45 +1,43 @@
 var read = require('./read_tweets');
 
-var AWS = require("aws-sdk");
+var AWS = require('aws-sdk');
+var config = {
+    "apiVersion": "2012-08-10",
+    "accessKeyId": "AKIAJ3PJ5N7YUZWPE66Q",
+    "secretAccessKey": "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",
+    "region": "sa-east-2"
+}
+var dynamodb = new AWS.DynamoDB(config);
 
 var params = {
-    RequestItems: {
-        "Music": {
-            Keys: [{
-                    "Artist": {
-                        S: "No One You Know"
-                    },
-                    "SongTitle": {
-                        S: "Call Me Today"
-                    }
-                },
-                {
-                    "Artist": {
-                        S: "Acme Band"
-                    },
-                    "SongTitle": {
-                        S: "Happy Day"
-                    }
-                },
-                {
-                    "Artist": {
-                        S: "No One You Know"
-                    },
-                    "SongTitle": {
-                        S: "Scared of My Shadow"
-                    }
-                }
-            ],
-            ProjectionExpression: "AlbumTitle"
+    Item: {
+        "AlbumTitle": {
+            S: "Somewhjsdnjatttt Famous"
+        },
+        "Artist": {
+            S: "No Onfdssfdeeeeee You Know"
+        },
+        "SongTitle": {
+            S: "Calllll Me Today"
         }
-    }
+    },
+    ReturnConsumedCapacity: "TOTAL",
+    TableName: "tweet"
 };
-
-var dynamodb = new AWS.DynamoDB({ region: 'sa-east-1' });
-dynamodb.batchGetItem(params, function(err, data) {
+dynamodb.putItem(params, function(err, data) {
     if (err) console.log(err, err.stack); // an error occurred
     else console.log(data); // successful response
 });
+
+var params = {
+    TableName: "tweet"
+};
+dynamodb.scan(params, function(err, data) {
+    if (err) console.log(err, err.stack); // an error occurred
+    else console.log(data.Items); // successful response
+
+});
+
 
 
 
