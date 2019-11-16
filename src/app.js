@@ -11,7 +11,7 @@ var dynamodb = new AWS.DynamoDB(config);
 
 var params = {
     Item: {
-        "AlbumTitle": {
+        "id": {
             S: "Somewhjsdnjatttt Famous"
         },
         "Artist": {
@@ -29,7 +29,7 @@ dynamodb.putItem(params, function(err, data) {
     else console.log(data); // successful response
 });
 
-var params = {
+params = {
     TableName: "tweet"
 };
 dynamodb.scan(params, function(err, data) {
