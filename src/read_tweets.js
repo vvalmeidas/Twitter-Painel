@@ -28,11 +28,7 @@ var months = {
 var params;
 
 
-
-
-
 module.exports.start = function() {
-    console.log("aaaa");
     params = settingsSearch.getUpdateParams();
 
     params.forEach(param => {

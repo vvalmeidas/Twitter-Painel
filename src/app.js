@@ -5,7 +5,7 @@ var config = {
     "apiVersion": "2012-08-10",
     "accessKeyId": "AKIAJ3PJ5N7YUZWPE66Q",
     "secretAccessKey": "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",
-    "region": "sa-east-2"
+    "region": "us-east-2"
 }
 var dynamodb = new AWS.DynamoDB(config);
 
