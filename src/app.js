@@ -8,7 +8,6 @@ var config = {
     "region": "us-east-2"
 }
 var dynamodb = new AWS.DynamoDB(config);
-
 var params = {
     Item: {
         "id": {
