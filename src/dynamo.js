@@ -24,6 +24,7 @@ module.exports.saveData = function(id, text, date, isRT) {
                 S: isRT
             }
         },
+        ConditionExpression: "attribute_not_exists(id)",
         ReturnConsumedCapacity: "TOTAL",
         TableName: "tweets"
     };
@@ -34,6 +35,7 @@ module.exports.saveData = function(id, text, date, isRT) {
     });
 };
 
+//adicionar parâmetro para especificação da busca
 module.exports.readTable = function(tableName) {
     params = {
         TableName: tableName
