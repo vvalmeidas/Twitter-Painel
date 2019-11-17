@@ -1,5 +1,6 @@
 var client = require('./twitter_client');
 var settingsSearch = require('./settings_search');
+var dynamo = require('./dynamo');
 
 //twitter search results
 var text = '';
@@ -27,7 +28,6 @@ var months = {
 
 var params;
 
-
 module.exports.start = function() {
     params = settingsSearch.getUpdateParams();
 
@@ -46,6 +46,8 @@ module.exports.start = function() {
                 }
 
                 text = tweet.full_text;
+
+                dynamo.saveData(id, text, date, isRT.toString());
 
 
                 console.log("DADOS DO TWEET");
