@@ -1,14 +1,13 @@
-var read = require('./read_tweets');
-
+var read = require('./tweet');
+var dynamo = require('./dynamo');
+var monitoring = require('./monitoring');
 
 async function iniciar() {
-    /*
+
     while (true) {
         read.start();
         await sleep(60000);
     }
-    */
-    read.start();
 }
 
 

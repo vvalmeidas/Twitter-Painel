@@ -7,26 +7,22 @@ var config = {
     "region": "us-east-2"
 }
 var dynamodb = new AWS.DynamoDB(config);
+var itemData = {};
+var S;
 
-module.exports.saveData = function(id, text, date, isRT) {
+module.exports.saveData = function(tableName, data) {
+    Object.keys(data).forEach(key => {
+        S = data[key];
+        itemData[key] = { S };
+    });
+
+    console.log(itemData);
+
     params = {
-        Item: {
-            "id": {
-                S: id
-            },
-            "text": {
-                S: text
-            },
-            "date": {
-                S: date
-            },
-            "isRT": {
-                S: isRT
-            }
-        },
+        Item: itemData,
         ConditionExpression: "attribute_not_exists(id)",
         ReturnConsumedCapacity: "TOTAL",
-        TableName: "tweets"
+        TableName: tableName
     };
 
     dynamodb.putItem(params, function(err, data) {
@@ -43,7 +39,11 @@ module.exports.readTable = function(tableName) {
 
     dynamodb.scan(params, function(err, data) {
         if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data.Items); // successful response
+        else {
+            console.log("qqqqqq");
+            console.log(data.Items);
+            return data.Items;
+        }
 
     });
 };

@@ -1,6 +1,16 @@
 var client = require('./twitter_client');
 var settingsSearch = require('./settings_search');
 var dynamo = require('./dynamo');
+var monitoring = require('./monitoring');
+
+class Tweet {
+    constructor(id, text, date, isRT) {
+        this.id = id;
+        this.text = text;
+        this.date = date;
+        this.isRT = isRT;
+    }
+};
 
 //twitter search results
 var text = '';
@@ -27,9 +37,12 @@ var months = {
 }
 
 var params;
+var result = {};
+
+//tratar caso sem coordenadas
 
 module.exports.start = function() {
-    params = settingsSearch.getUpdateParams();
+    params = settingsSearch.getUpdateParams(); //trocar por busca de monitoring
 
     params.forEach(param => {
         client.get('search/tweets', param, function(error, tweets, response) {
@@ -47,8 +60,12 @@ module.exports.start = function() {
 
                 text = tweet.full_text;
 
-                dynamo.saveData(id, text, date, isRT.toString());
+                result.id = id;
+                result.text = text;
+                result.date = date;
+                result.isRT = isRT.toString();
 
+                ///     dynamo.saveData("tweets", new Tweet(id, text, date, isRT.toString()));
 
                 console.log("DADOS DO TWEET");
                 console.log(id);

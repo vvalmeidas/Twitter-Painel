@@ -1,9 +1,9 @@
 //user settings
-var querySearch = 'twitter';
-var cityName = 'Salvador';
+var querySearch = 'dua lipa';
+var cityName = 'São Paulo';
 var lat = '';
 var long = '';
-var radius = '5km';
+var radius = '10km';
 
 //reading geolocation data
 var citiesData = require('../files/municipios.json');
@@ -27,6 +27,8 @@ module.exports.getUpdateParams = function() {
     searchParams.geocode = lat + ',' + long + ',' + radius;
 
     registeredSearchs.push(searchParams);
+
+    console.log(registeredSearchs);
 
     return registeredSearchs;
 };
