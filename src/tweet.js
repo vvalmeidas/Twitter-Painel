@@ -65,7 +65,7 @@ module.exports.start = function() {
                 result.date = date;
                 result.isRT = isRT.toString();
 
-                ///     dynamo.saveData("tweets", new Tweet(id, text, date, isRT.toString()));
+                //dynamo.saveData("tweets", new Tweet(id, text, date, isRT.toString()));
 
                 console.log("DADOS DO TWEET");
                 console.log(id);
