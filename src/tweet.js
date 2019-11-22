@@ -52,6 +52,8 @@ module.exports.search = function() {
                 result.text = tweet.full_text;
                 result.isRT = isRT.toString();
 
+                console.log(tweet);
+
 
                 //dynamo.saveData("tweets", new Tweet(id, text, date, isRT.toString()));
 

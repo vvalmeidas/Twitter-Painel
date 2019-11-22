@@ -1,5 +1,4 @@
 var citiesData = require('../files/municipios.json');
-var moment = require('moment');
 var coordinates;
 var dateTime;
 
@@ -39,10 +38,13 @@ module.exports.convertDateTime = function(createdAt) {
 
     var date = new Date(months[createdAt[1]] + '/' + createdAt[2] + '/' + createdAt[5] + ' ' + createdAt[3] + ' GMT');
     var dateLocale;
+    var dateAux;
     dateTime = [];
 
     dateLocale = date.toLocaleString().split(' ');
-    dateTime.push(moment(dateLocale[0]).format("DD/MM/YYYY"));
+    dateAux = dateLocale[0].split('-');
+
+    dateTime.push(dateAux[2] + '/' + dateAux[1] + '/' + dateAux[0]);
     dateTime.push(dateLocale[1]);
     return dateTime;
 }
