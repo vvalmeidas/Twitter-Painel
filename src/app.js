@@ -4,7 +4,6 @@ var monitoring = require('./monitoring');
 var util = require('./util');
 
 async function iniciar() {
-    console.log(util.convertDateTime('Wed Nov 20 00:11:54 +0000 2019'));
     /* 
         var data = {};
 
@@ -28,7 +27,7 @@ async function iniciar() {
 
 
     //dynamo.saveData("tweets", data);
-    //tweet.search();
+    tweet.search();
     /* while (true) {
         
         await sleep(60000);
