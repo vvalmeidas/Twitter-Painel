@@ -1,7 +1,8 @@
 var client = require('./twitter_client');
 var settingsSearch = require('./settings_search');
-var dynamo = require('./dynamo');
+//var dynamo = require('./dynamo');
 var monitoring = require('./monitoring');
+var util = require('./util');
 
 class Tweet {
     constructor(id, text, date, isRT) {
@@ -16,40 +17,30 @@ class Tweet {
 var text = '';
 var id = '';
 var isRt = false;
-var date = '';
+
 
 //aux
 var i = 0;
-var createdAt = '';
-var months = {
-    'Jan': '01',
-    'Feb': '02',
-    'Mar': '03',
-    'Apr': '04',
-    'May': '05',
-    'Jun': '06',
-    'Jul': '07',
-    'Aug': '08',
-    'Sep': '09',
-    'Oct': '10',
-    'Nov': '11',
-    'Dec': '12'
-}
+var dateTimeConverted;
 
 var params;
 var result = {};
 
 //tratar caso sem coordenadas
 
-module.exports.start = function() {
+module.exports.search = function() {
     params = settingsSearch.getUpdateParams(); //trocar por busca de monitoring
-
     params.forEach(param => {
         client.get('search/tweets', param, function(error, tweets, response) {
+
             tweets.statuses.forEach(function(tweet) {
-                id = tweet.id_str;
-                createdAt = tweet.created_at.split(' ');
-                date = createdAt[2] + '/' + months[createdAt[1]] + '/' + createdAt[5];
+                result.id = tweet.id_str;
+                result.user = tweet.user.screen_name;
+                result.language = tweet.metadata.iso_language_code;
+
+                dateTimeConverted = util.convertDateTime(tweet.created_at);
+                result.date = dateTimeConverted[0];
+                result.time = dateTimeConverted[1];
 
                 if (tweet.retweeted_status) {
                     tweet = tweet.retweeted_status;
@@ -58,20 +49,14 @@ module.exports.start = function() {
                     isRT = false;
                 }
 
-                text = tweet.full_text;
-
-                result.id = id;
-                result.text = text;
-                result.date = date;
+                result.text = tweet.full_text;
                 result.isRT = isRT.toString();
+
 
                 //dynamo.saveData("tweets", new Tweet(id, text, date, isRT.toString()));
 
                 console.log("DADOS DO TWEET");
-                console.log(id);
-                console.log(text);
-                console.log(date);
-                console.log(isRT);
+                console.log(result);
                 console.log("\n\n");
                 i++;
 
