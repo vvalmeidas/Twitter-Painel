@@ -41,7 +41,7 @@ module.exports.convertDateTime = function(createdAt) {
     var dateAux;
     dateTime = [];
 
-    dateLocale = date.toLocaleString().split(' ');
+    dateLocale = date.toLocaleString('pt-BR').split(' ');
     dateAux = dateLocale[0].split('-');
 
     dateTime.push(dateAux[2] + '/' + dateAux[1] + '/' + dateAux[0]);

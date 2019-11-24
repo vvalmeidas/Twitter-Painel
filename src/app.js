@@ -3,6 +3,9 @@ var dynamo = require('./dynamo');
 var monitoring = require('./monitoring');
 var util = require('./util');
 
+
+//CONSERTAR HORA E DATA NO SERVIDORRRRRRRRRRRRRR
+
 async function iniciar() {
     /* 
         var data = {};
