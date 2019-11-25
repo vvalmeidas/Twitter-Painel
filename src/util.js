@@ -34,7 +34,9 @@ module.exports.getCityCoordinates = function(cityName) {
 }
 
 module.exports.convertDateTime = function(createdAt) {
+    console.log(createdAt);
     createdAt = createdAt.split(' ');
+    console.log(createdAt);
 
     var date = new Date(months[createdAt[1]] + '/' + createdAt[2] + '/' + createdAt[5] + ' ' + createdAt[3] + ' GMT');
     var dateLocale;
@@ -43,7 +45,8 @@ module.exports.convertDateTime = function(createdAt) {
 
     dateLocale = date.toLocaleString('pt-BR', { timeZone: 'America/Bahia' }).split(' ');
     dateAux = dateLocale[0].split('-');
-
+    console.log(dateLocale[0]);
+    console.log(dateAux);
     console.log(dateAux[2]);
     console.log(dateAux[1]);
     console.log(dateAux[0]);
