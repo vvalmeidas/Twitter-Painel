@@ -44,6 +44,10 @@ module.exports.convertDateTime = function(createdAt) {
     dateLocale = date.toLocaleString('pt-BR', { timeZone: 'America/Bahia' }).split(' ');
     dateAux = dateLocale[0].split('-');
 
+    console.log(dateAux[2]);
+    console.log(dateAux[1]);
+    console.log(dateAux[0]);
+
     dateTime.push(dateAux[2] + '/' + dateAux[1] + '/' + dateAux[0]);
     dateTime.push(dateLocale[1]);
     return dateTime;
