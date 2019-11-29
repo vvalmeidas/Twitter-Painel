@@ -23,15 +23,14 @@ module.exports.newMonitoring = function(query, cityName, lat, long, radius) {
     //tratar exceção (já existe com id)
 }
 
-module.exports.getMonitorings = function() {
-    var monitoringsTable = dynamo.readTable("monitorings");
-    var monitorings = [];
-    console.log(monitoringsTable);
+module.exports.getMonitorings = async function() {
+    var monitoringsTable = await dynamo.readTable("monitorings");
+    var results = [];
 
-    for (var monitoring in monitoringsTable) {
-        console.log("oxeeee");
-    }
+    monitoringsTable.forEach(monitoring => {
+        results.push(monitoring);
+    });
 
-    console.log(monitorings);
+    return results;
 
 }

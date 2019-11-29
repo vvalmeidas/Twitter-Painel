@@ -4,8 +4,6 @@ var monitoring = require('./monitoring');
 var util = require('./util');
 
 
-//CONSERTAR HORA E DATA NO SERVIDORRRRRRRRRRRRRR
-
 async function iniciar() {
     /* 
         var data = {};
@@ -30,12 +28,20 @@ async function iniciar() {
 
 
     //dynamo.saveData("tweets", data);
-    tweet.search();
+    //tweet.search();
     /* while (true) {
         
         await sleep(60000);
     }
  */
+    var o = {};
+    o.id = "kdkssm";
+    o.x = "kkk";
+    dynamo.read("tweets").then(function(uid) {
+        console.log(uid);
+    }).catch(err => {
+        console.log(err.message)
+    })
 }
 
 
