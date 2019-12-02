@@ -34,14 +34,17 @@ async function iniciar() {
         await sleep(60000);
     }
  */
-    var o = {};
-    o.id = "kdkssm";
-    o.x = "kkk";
-    dynamo.read("tweets").then(function(uid) {
-        console.log(uid);
-    }).catch(err => {
-        console.log(err.message)
-    })
+
+    /*     monitoring.add('dua lipa', 100, 'extended', 'recent', 'São Paulo', '10km').then(function(uid) {
+            console.log(uid);
+        }).catch(err => {
+            console.log(err.message)
+        });
+     */
+
+    //monitoring.add('oi', 100, 'extended', 'recent', 'Rio de Janeiro', '10km').catch(error => console.log(error.message))
+
+
 }
 
 

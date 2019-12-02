@@ -14,7 +14,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 var dynamodb = new AWS.DynamoDB();
 
-var itemData = {};
+
 var S;
 
 
@@ -33,7 +33,7 @@ module.exports.read = function(tableName, filterExpression, expressionAttributeV
             const result = await awsRequest.promise().then(function(data) {
                 resolve(data.Items);
             }, function(error) {
-                reject(Error("Não retornou resultado"));
+                reject(error);
             });
 
         } catch (error) {
@@ -44,15 +44,14 @@ module.exports.read = function(tableName, filterExpression, expressionAttributeV
 
 module.exports.write = function(tableName, data) {
     return new Promise(async function(resolve, reject) {
+        var itemData = {};
         Object.keys(data).forEach(key => {
-            S = data[key];
+            S = data[key].toString();
             itemData[key] = { S };
         });
 
-        console.log(itemData);
-
         params = {
-            Item: data,
+            Item: itemData,
             ConditionExpression: "attribute_not_exists(id)",
             ReturnConsumedCapacity: "TOTAL",
             TableName: tableName
@@ -60,11 +59,12 @@ module.exports.write = function(tableName, data) {
 
         try {
             const awsRequest = await docClient.put(params);
-            const result = await awsRequest.promise().then(function(data) {
-                resolve(data);
-            }, function(error) {
-                reject(Error(error.message));
-            });
+            const result = await awsRequest.promise()
+                .then(function(data) {
+                    resolve(data);
+                }, function(error) {
+                    reject(error);
+                });
 
         } catch (error) {
             reject(error);
