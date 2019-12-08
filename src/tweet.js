@@ -1,15 +1,19 @@
 var client = require('./twitter_client');
 var settingsSearch = require('./settings_search');
-//var dynamo = require('./dynamo');
+var dynamo = require('./dynamo');
 var monitoring = require('./monitoring');
 var util = require('./util');
 
 class Tweet {
-    constructor(id, text, date, isRT) {
-        this.id = id;
-        this.text = text;
-        this.date = date;
-        this.isRT = isRT;
+    constructor(result) {
+        this.id = result.id;
+        this.user = result.user;
+        this.language = result.language;
+        this.date = result.date;
+        this.time = result.time;
+        this.isRT = result.isRT;
+        this.text = result.text;
+        this.responsible = result.responsible;
     }
 };
 
@@ -29,40 +33,47 @@ var result = {};
 //tratar caso sem coordenadas
 
 module.exports.search = function() {
-    params = settingsSearch.getUpdateParams(); //trocar por busca de monitoring
-    params.forEach(param => {
-        client.get('search/tweets', param, function(error, tweets, response) {
 
-            tweets.statuses.forEach(function(tweet) {
-                result.id = tweet.id_str;
-                result.user = tweet.user.screen_name;
-                result.language = tweet.metadata.iso_language_code;
+    monitoring.getMonitorings().then(function(data) {
+        data.forEach(monitoring => {
+            client.get('search/tweets', monitoring.getParams(), function(error, tweets, response) {
 
-                dateTimeConverted = util.convertDateTime(tweet.created_at);
-                result.date = dateTimeConverted[0];
-                result.time = dateTimeConverted[1];
+                tweets.statuses.forEach(function(tweet) {
+                    result.id = tweet.id_str;
+                    result.user = tweet.user.screen_name;
+                    result.language = tweet.metadata.iso_language_code;
 
-                if (tweet.retweeted_status) {
-                    tweet = tweet.retweeted_status;
-                    isRT = true;
-                } else {
-                    isRT = false;
-                }
+                    dateTimeConverted = util.convertDateTime(tweet.created_at);
+                    result.date = dateTimeConverted[0];
+                    result.time = dateTimeConverted[1];
 
-                result.text = tweet.full_text;
-                result.isRT = isRT.toString();
+                    if (tweet.retweeted_status) {
+                        tweet = tweet.retweeted_status;
+                        isRT = true;
+                    } else {
+                        isRT = false;
+                    }
 
-                //dynamo.saveData("tweets", new Tweet(id, text, date, isRT.toString()));
+                    result.text = tweet.full_text;
+                    result.isRT = isRT.toString();
 
-                console.log("DADOS DO TWEET");
-                console.log(result);
-                console.log("\n\n");
-                i++;
+                    result.responsible = monitoring.id;
 
+                    dynamo.write('tweets', new Tweet(result)).catch(function(error) {
+                        if (error.code != 'ConditionalCheckFailedException') {
+                            console.log(error.message);
+                        }
+                    })
+                    i++;
+
+                });
+
+                console.log(i);
+                i = 0;
             });
-
-            console.log(i);
-            i = 0;
         });
-    });
+    })
+
+
+
 };

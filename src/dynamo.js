@@ -14,10 +14,6 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 var dynamodb = new AWS.DynamoDB();
 
-
-var S;
-
-
 //adicionar parâmetro para especificação da busca
 
 module.exports.read = function(tableName, filterExpression, expressionAttributeValues) {
@@ -45,9 +41,10 @@ module.exports.read = function(tableName, filterExpression, expressionAttributeV
 module.exports.write = function(tableName, data) {
     return new Promise(async function(resolve, reject) {
         var itemData = {};
+        var S;
         Object.keys(data).forEach(key => {
             S = data[key].toString();
-            itemData[key] = { S };
+            itemData[key] = S
         });
 
         params = {
@@ -71,21 +68,3 @@ module.exports.write = function(tableName, data) {
         }
     });
 }
-
-/* module.exports.saveData = function(tableName, data) {
-
-
-    console.log(itemData);
-
-    params = {
-        Item: itemData,
-        ConditionExpression: "attribute_not_exists(id)",
-        ReturnConsumedCapacity: "TOTAL",
-        TableName: tableName
-    };
-
-    dynamodb.putItem(params, function(err, data) {
-        if (err) console.log(err, err.stack); // an error occurred
-        else console.log(data); // successful response
-    });
-}; */

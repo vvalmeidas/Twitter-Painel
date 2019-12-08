@@ -28,23 +28,24 @@ async function iniciar() {
 
 
     //dynamo.saveData("tweets", data);
-    //tweet.search();
-    /* while (true) {
-        
-        await sleep(60000);
-    }
- */
 
-    /*     monitoring.add('dua lipa', 100, 'extended', 'recent', 'São Paulo', '10km').then(function(uid) {
+    while (true) {
+        tweet.search();
+        await sleep(60000 * 30);
+    }
+
+    /*     monitoring.add('ccc', 100, 'extended', 'recent', 'São Paulo', '10km').then(function(uid) {
             console.log(uid);
         }).catch(err => {
-            console.log(err.message)
+            console.log(err)
         });
+
      */
-
-    //monitoring.add('oi', 100, 'extended', 'recent', 'Rio de Janeiro', '10km').catch(error => console.log(error.message))
-
-
+    //console.log(util.getCityCoordinates("Brasília"))
+    /* 
+        monitoring.getMonitorings().then(function(data) {
+            console.log(data)
+        }) */
 }
 
 

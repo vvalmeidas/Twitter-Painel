@@ -14,7 +14,7 @@ class Monitoring {
         this.count = count;
         this.tweetMode = tweetMode;
         this.resultType = resultType;
-        this.cityName = cityName; //mudar para classe-objeto
+        this.cityName = cityName;
         this.lat = lat;
         this.long = long;
         this.radius = radius;
@@ -42,7 +42,7 @@ module.exports.add = async function(query, count, tweetMode, resultType, cityNam
 
     id = crypto.createHash("md5").update(query + count + tweetMode + cityName + lat + long + radius).digest("hex");
 
-    await dynamo.write("monitorings", new Monitoring(id, query, count, tweetMode, resultType, cityName, lat, long, radius))
+    await dynamo.write("monitorings", new Monitoring(id, query, count.toString(), tweetMode, resultType, cityName, lat.toString(), long.toString(), radius))
         .then(function(data) {
             return data;
         });
@@ -50,12 +50,25 @@ module.exports.add = async function(query, count, tweetMode, resultType, cityNam
 }
 
 module.exports.getMonitorings = async function() {
-    var monitoringsTable = await dynamo.readTable("monitorings");
     var results = [];
+    var m;
 
-    monitoringsTable.forEach(monitoring => {
-        results.push(monitoring);
-    });
+    await dynamo.read("monitorings")
+        .then(function(data) {
+            data.forEach(monitoring => {
+                results.push(new Monitoring(
+                    monitoring.id,
+                    monitoring.query,
+                    monitoring.count,
+                    monitoring.tweetMode,
+                    monitoring.resultType,
+                    monitoring.cityName,
+                    monitoring.lat,
+                    monitoring.long,
+                    monitoring.radius
+                ));
+            });
+        })
 
     return results;
 }
