@@ -20,15 +20,32 @@ class Monitoring {
         this.radius = radius;
     }
 
-    getParams() {
-        return {
-            "id": this.id,
-            "q": this.query,
-            "count": this.count,
-            "tweet_mode": this.tweetMode,
-            "result_type": this.resultType,
-            "geocode": this.lat + ',' + this.long + ',' + this.radius
-        };
+    getParams(sinceId) {
+        if (sinceId == undefined) {
+            return {
+                "id": this.id,
+                "q": this.query,
+                "count": this.count,
+                "tweet_mode": this.tweetMode,
+                "result_type": this.resultType,
+                "geocode": this.lat + ',' + this.long + ',' + this.radius
+            };
+        } else {
+            return {
+                "id": this.id,
+                "q": this.query,
+                "count": this.count,
+                "tweet_mode": this.tweetMode,
+                "result_type": this.resultType,
+                "since_id": sinceId,
+                "geocode": this.lat + ',' + this.long + ',' + this.radius
+            };
+        }
+
+    }
+
+    getId() {
+        return this.id;
     }
 
 }
@@ -46,12 +63,10 @@ module.exports.add = async function(query, count, tweetMode, resultType, cityNam
         .then(function(data) {
             return data;
         });
-    //tratar exceção (já existe com id)
 }
 
 module.exports.getMonitorings = async function() {
     var results = [];
-    var m;
 
     await dynamo.read("monitorings")
         .then(function(data) {

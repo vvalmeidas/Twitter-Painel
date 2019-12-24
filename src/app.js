@@ -2,6 +2,7 @@ var tweet = require('./tweet');
 var dynamo = require('./dynamo');
 var monitoring = require('./monitoring');
 var util = require('./util');
+const fs = require('fs');
 
 
 async function iniciar() {
@@ -29,23 +30,12 @@ async function iniciar() {
 
     //dynamo.saveData("tweets", data);
 
+
+
     while (true) {
         tweet.search();
-        await sleep(60000 * 30);
+        await sleep(60000 * 1);
     }
-
-    /*     monitoring.add('ccc', 100, 'extended', 'recent', 'São Paulo', '10km').then(function(uid) {
-            console.log(uid);
-        }).catch(err => {
-            console.log(err)
-        });
-
-     */
-    //console.log(util.getCityCoordinates("Brasília"))
-    /* 
-        monitoring.getMonitorings().then(function(data) {
-            console.log(data)
-        }) */
 }
 
 
