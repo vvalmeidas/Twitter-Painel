@@ -31,9 +31,10 @@ var firstResult = true;
 
 module.exports.search = function() {
     monitoring.getMonitorings().then(function(data) {
+        console.log(data)
         data.forEach(function(monitoring) {
             result = null;
-
+            console.log(monitoring)
             client.get('search/tweets', monitoring.getParams(lastId[monitoring.id]), function(error, tweets, response) {
                 if (error == null) {
                     tweets.statuses.forEach(function(tweet) {
