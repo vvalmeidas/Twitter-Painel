@@ -30,6 +30,7 @@ var firstResult = true;
 //tratar caso sem coordenadas
 
 module.exports.search = function() {
+    console.log("oi")
     monitoring.getMonitorings().then(function(data) {
         console.log(data)
         data.forEach(function(monitoring) {
