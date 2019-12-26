@@ -78,7 +78,7 @@ module.exports.search = function() {
 
                         i++;
                     });
-                    //console.log(i + " " + monitoring.query);
+                    console.log(i + " " + monitoring.query);
                     i = 0;
                     firstResult = true;
                 } else {
