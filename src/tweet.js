@@ -30,12 +30,9 @@ var firstResult = true;
 //tratar caso sem coordenadas
 
 module.exports.search = function() {
-    console.log("oi")
     monitoring.getMonitorings().then(function(data) {
-        console.log(data)
         data.forEach(function(monitoring) {
             result = null;
-            console.log(monitoring)
             client.get('search/tweets', monitoring.getParams(lastId[monitoring.id]), function(error, tweets, response) {
                 if (error == null) {
                     tweets.statuses.forEach(function(tweet) {
@@ -80,7 +77,7 @@ module.exports.search = function() {
 
                         i++;
                     });
-                    console.log(i + " " + monitoring.query);
+                    //console.log(i + " " + monitoring.query);
                     i = 0;
                     firstResult = true;
                 } else {
