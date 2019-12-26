@@ -31,10 +31,11 @@ async function iniciar() {
     //dynamo.saveData("tweets", data);
 
 
-
     while (true) {
-        tweet.search();
-        await sleep(60000 * 1);
+        if (tweet.search() == -1) {
+            break;
+        }
+        await sleep(60000 * 5);
     }
 }
 

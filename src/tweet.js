@@ -58,7 +58,7 @@ module.exports.search = function() {
 
                         result.responsible = monitoring.id;
 
-                        console.log(result);
+                        //console.log(result);
 
                         dynamo.write('tweets', new Tweet(result)).catch(function(error) {
                             if (error.code != 'ConditionalCheckFailedException') {
@@ -78,7 +78,7 @@ module.exports.search = function() {
 
                         i++;
                     });
-                    console.log(i);
+                    //console.log(i + " " + monitoring.query);
                     i = 0;
                     firstResult = true;
                 } else {
