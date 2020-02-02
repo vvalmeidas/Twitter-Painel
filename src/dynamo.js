@@ -14,6 +14,8 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 var dynamodb = new AWS.DynamoDB();
 
+var cont = 1298;
+
 //adicionar parâmetro para especificação da busca
 
 module.exports.read = function(tableName, filterExpression, expressionAttributeValues) {
@@ -58,6 +60,7 @@ module.exports.write = function(tableName, data) {
             const awsRequest = await docClient.put(params);
             const result = await awsRequest.promise()
                 .then(function(data) {
+                    cont++;
                     resolve(data);
                 }, function(error) {
                     reject(error);
@@ -66,5 +69,8 @@ module.exports.write = function(tableName, data) {
         } catch (error) {
             reject(error);
         }
+
+        console.log("cont = " + cont);
     });
+
 }

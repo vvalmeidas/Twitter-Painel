@@ -57,8 +57,6 @@ module.exports.search = function() {
 
                         result.responsible = monitoring.id;
 
-                        //console.log(result);
-
                         dynamo.write('tweets', new Tweet(result)).catch(function(error) {
                             if (error.code != 'ConditionalCheckFailedException') {
                                 fs.appendFile("../log/log.txt", error + "\n", function(error) {
@@ -90,7 +88,6 @@ module.exports.search = function() {
                     return -1;
                 }
             });
-
         });
     }).catch(function(error) {
         fs.appendFile("../log/log.txt", error + "\n", function(error) {

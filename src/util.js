@@ -41,7 +41,7 @@ module.exports.convertDateTime = function(createdAt) {
 
     dateLocale = date.toLocaleString('pt-BR', { timeZone: 'America/Bahia' }).split(' ');
 
-    dateTime.push(date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear());
+    dateTime.push(date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear());
     dateTime.push(dateLocale[1]);
     return dateTime;
 }

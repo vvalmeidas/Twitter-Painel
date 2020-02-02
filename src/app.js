@@ -30,12 +30,13 @@ async function iniciar() {
 
     //dynamo.saveData("tweets", data);
 
-
     while (true) {
         if (tweet.search() == -1) {
             break;
         }
-        await sleep(60000 * 5);
+        await sleep(60000 * 30);
+
+        console.log("XXXXXXXXXXXXXX");
     }
 }
 
