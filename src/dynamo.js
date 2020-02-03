@@ -14,7 +14,7 @@ const docClient = new AWS.DynamoDB.DocumentClient();
 
 var dynamodb = new AWS.DynamoDB();
 
-var cont = 1298;
+var cont = 2059;
 
 //adicionar parâmetro para especificação da busca
 
